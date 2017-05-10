@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using PutNet.Web.Identity.Database;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using PutNet.Web.Identity.Database.Identity;
+using PutNet.Web.Identity.Database.Identity.Store;
 
 namespace PutNet.Web.Identity
 {
@@ -31,11 +33,11 @@ namespace PutNet.Web.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = "Server=localhost,1433;Database=IdentityDemo;Trusted_Connection=True;";
+            var connectionString = "Server=localhost,1433;Database=IdentityGuidDemo;Trusted_Connection=True;";
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<DemoContext>(o => o.UseSqlServer(connectionString))
-                    .AddIdentity<User, IdentityRole>(options => {
+                    .AddIdentity<User, GuidRole>(options => {
                         // Password settings
                         options.Password.RequireDigit = true;
                         options.Password.RequiredLength = 8;
@@ -55,8 +57,10 @@ namespace PutNet.Web.Identity
                         // User settings
                         options.User.RequireUniqueEmail = true;
                     })
-                    .AddEntityFrameworkStores<DemoContext>()
                     .AddDefaultTokenProviders();
+
+            services.AddScoped<IUserStore<User>, GuidUserStore>();  
+            services.AddScoped<IRoleStore<GuidRole>, GuidRoleStore>();
 
             // Add framework services.
             services.AddMvc();

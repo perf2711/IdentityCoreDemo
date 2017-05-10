@@ -8,8 +8,8 @@ using PutNet.Web.Identity.Database;
 namespace PutNet.Web.Identity.Migrations
 {
     [DbContext(typeof(DemoContext))]
-    [Migration("20170509234923_initial")]
-    partial class initial
+    [Migration("20170510005830_InitialGuid")]
+    partial class InitialGuid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -17,9 +17,9 @@ namespace PutNet.Web.Identity.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidRole", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
@@ -40,7 +40,7 @@ namespace PutNet.Web.Identity.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -49,8 +49,7 @@ namespace PutNet.Web.Identity.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired();
+                    b.Property<Guid>("RoleId");
 
                     b.HasKey("Id");
 
@@ -59,7 +58,7 @@ namespace PutNet.Web.Identity.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -68,8 +67,7 @@ namespace PutNet.Web.Identity.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
@@ -78,7 +76,7 @@ namespace PutNet.Web.Identity.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -86,8 +84,7 @@ namespace PutNet.Web.Identity.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -96,11 +93,11 @@ namespace PutNet.Web.Identity.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserRole", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
-                    b.Property<string>("RoleId");
+                    b.Property<Guid>("RoleId");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -109,9 +106,9 @@ namespace PutNet.Web.Identity.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserToken", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.Property<string>("LoginProvider");
 
@@ -121,12 +118,14 @@ namespace PutNet.Web.Identity.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
+                    b.HasAlternateKey("UserId");
+
                     b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("PutNet.Web.Identity.Database.User", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
@@ -178,15 +177,15 @@ namespace PutNet.Web.Identity.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidRoleClaim", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                    b.HasOne("PutNet.Web.Identity.Database.Identity.GuidRole")
                         .WithMany("Claims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserClaim", b =>
                 {
                     b.HasOne("PutNet.Web.Identity.Database.User")
                         .WithMany("Claims")
@@ -194,7 +193,7 @@ namespace PutNet.Web.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserLogin", b =>
                 {
                     b.HasOne("PutNet.Web.Identity.Database.User")
                         .WithMany("Logins")
@@ -202,15 +201,23 @@ namespace PutNet.Web.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserRole", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                    b.HasOne("PutNet.Web.Identity.Database.Identity.GuidRole")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PutNet.Web.Identity.Database.User")
                         .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PutNet.Web.Identity.Database.Identity.GuidUserToken", b =>
+                {
+                    b.HasOne("PutNet.Web.Identity.Database.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
