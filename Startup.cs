@@ -33,7 +33,7 @@ namespace PutNet.Web.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = "Server=localhost,1433;Database=IdentityGuidDemo;Trusted_Connection=True;";
+            var connectionString = "Server=localhost;Database=IdentityGuidDemo;Trusted_Connection=True;";
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<DemoContext>(o => o.UseSqlServer(connectionString))
